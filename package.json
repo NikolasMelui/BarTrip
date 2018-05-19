@@ -8,6 +8,7 @@
 	"private": true,
 	"scripts": {
 		"start": "nodemon src/index.js --exec babel-node",
+		"debug": "nodemon --inspect=12345 src/index.js --exec babel-node",
 		"build": "babel src -d build",
 		"serve": "node build/index.js"
 	},
@@ -26,7 +27,13 @@
 		"env": {
 			"node": true
 		},
-		"extends": ["airbnb-base", "prettier"]
+		"extends": [
+			"airbnb-base",
+			"prettier"
+		]
 	},
-	"eslint.packageManager": "yarn"
+	"eslint.packageManager": "yarn",
+	"dependencies": {
+		"@google/maps": "^0.4.6"
+	}
 }
