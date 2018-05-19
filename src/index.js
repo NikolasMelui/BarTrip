@@ -69,7 +69,13 @@ const unifiedServer = (req, res) => {
 				.then(async response => {
 					const curValue = response.json.routes[0].legs;
 					await global.console.log(curValue);
-					dataStorage.create('routes', 'newFile', curValue, err => global.console.log(err));
+					// dataStorage.create('routes', 'newFile', curValue, err => global.console.log(err));
+					dataStorage.read('routes', 'newFile', (err, _data) =>
+						/**
+						 * @TODO: delete stringify function.
+						 */
+						global.console.log(`Error is: ${err} , data is: ${JSON.stringify(_data)}`)
+					);
 				})
 				.catch(err => {
 					global.console.log(err);

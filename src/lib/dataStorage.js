@@ -25,6 +25,16 @@ const dataStorage = {
 			}
 		});
 	},
+	read: (dir, file, callback) => {
+		fs.readFile(`${dataStorage.baseDir}/${dir}/${file}.json`, 'utf8', (err, _data) => {
+			if (!err && _data) {
+				const parsedData = JSON.parse(_data);
+				callback(false, parsedData);
+			} else {
+				callback(err, _data);
+			}
+		});
+	},
 };
 
 export default dataStorage;
