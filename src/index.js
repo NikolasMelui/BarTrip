@@ -2,6 +2,7 @@ import http from 'http';
 import url from 'url';
 import googleMaps from '@google/maps';
 import { StringDecoder } from 'string_decoder';
+import dataStorage from './lib/dataStorage';
 import handlers from './lib/handlers';
 import config from './lib/config';
 
@@ -66,7 +67,9 @@ const unifiedServer = (req, res) => {
 				})
 				.asPromise()
 				.then(async response => {
-					await global.console.log(response.json.routes[0].legs);
+					const curValue = response.json.routes[0].legs;
+					await global.console.log(curValue);
+					dataStorage.create('routes', 'newFile', curValue, err => global.console.log(err));
 				})
 				.catch(err => {
 					global.console.log(err);
