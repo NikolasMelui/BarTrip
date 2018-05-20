@@ -1,6 +1,6 @@
 import googleMaps from '@google/maps';
-import request from 'request';
 import dataStorage from '../lib/dataStorage';
+import helpers from '../lib/helpers';
 
 const googleMapsClient = googleMaps.createClient({
 	key: 'AIzaSyBlCPWOmrOEKqe89ATezi_msSCnuKIPrzA',
@@ -53,17 +53,29 @@ const handlers = {
 						mode: 'walking',
 					})
 					.asPromise()
-					.then(async response => {
-						curValue = await response.json.routes[0].legs;
-						global.console.log(curValue);
+					.then(response => {
+						curValue = response.json.routes[0].legs;
 						dataStorage.create('routes', 'newFile', curValue, err => global.console.log(err));
 						// dataStorage.read('routes', 'newFile', (err, _data) =>
 						// 	global.console.log(`Error is: ${err} , data is: ${JSON.stringify(_data)}`)
 						// );
 					})
 					.catch(err => {
-						global.console.log(err);
+						console.log(err);
 					});
+
+				helpers.gettingAccessToken('http://10.91.87.76:8080/app/rest/v2/oauth/token').then(res => {
+					helpers
+						.gettingBars('http://10.91.87.76:8080/app/rest/v2/entities/bartrip$Bar', {
+							Authorization: `Bearer ${JSON.parse(res).access_token}`,
+						})
+						.then(_res => {
+							dataStorage.create('bars', JSON.parse(_res)[0].id, JSON.parse(_res), err =>
+								global.console.log(err)
+							);
+							console.log(_res);
+						});
+				});
 				callback(200);
 			} else {
 				callback(400);

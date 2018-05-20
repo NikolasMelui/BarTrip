@@ -1,8 +1,9 @@
-import request from 'request';
+// import request from 'request';
+import requestPromise from 'request-promise';
 
 const helpers = {
 	// createRandomString: () => {},
-	gettingAccessToken: async url => {
+	gettingAccessToken: url => {
 		const reqOptions = {
 			url,
 			headers: {
@@ -12,25 +13,14 @@ const helpers = {
 			method: 'POST',
 			formData: { grant_type: 'password', username: 'admin', password: 'admin' },
 		};
-		const callbackHell = async (err, res, body) => {
-			if (!err && res.statusCode === 200) {
-				console.log(body);
-				return body;
-			}
-		};
-		request(reqOptions, callbackHell);
+		return requestPromise(reqOptions);
 	},
 	gettingBars: (url, headers) => {
 		const reqOptions = {
 			url,
 			headers,
 		};
-		const callbackHell = (err, res, body) => {
-			if (!err && res.statusCode === 200) {
-				return JSON.parse(body);
-			}
-		};
-		request(reqOptions, callbackHell);
+		return requestPromise(reqOptions);
 	},
 };
 export default helpers;

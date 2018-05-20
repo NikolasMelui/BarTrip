@@ -52,10 +52,14 @@ const unifiedServer = (req, res) => {
 const server = http.createServer((req, res) => {
 	unifiedServer(req, res);
 });
-server.listen(config.server.port, config.server.hostname, async () => {
+server.listen(config.server.port, config.server.hostname, () => {
 	global.console.log(`Server is listening on port: ${config.server.port}`);
-	console.log(await helpers.gettingAccessToken('http://10.91.87.76:8080/app/rest/v2/oauth/token'));
-	// helpers.gettingBars('http://10.91.87.76:8080/app/rest/v2/entities/bartrip$Bar', {
-	// 	Authorization: accessToken,
-	// });
+	// console.log(0.806 * 3 * 1.2 / (0.58 * 80) - 0.015 * 2); // eBAC
+	helpers.gettingAccessToken('http://10.91.87.76:8080/app/rest/v2/oauth/token').then(res => {
+		helpers
+			.gettingBars('http://10.91.87.76:8080/app/rest/v2/entities/bartrip$Bar', {
+				Authorization: `Bearer ${JSON.parse(res).access_token}`,
+			})
+			.then(_res => console.log(_res));
+	});
 });

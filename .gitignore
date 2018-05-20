@@ -11,3 +11,5 @@ node_modules/
 *.tgz
 .yarn-integrity
 .env
+src/data/bars
+src/data/routes
