@@ -34,7 +34,8 @@ const handlers = {
 					: false;
 
 			if (curBudget && curBarsNum && curMaxDist) {
-				let curValue = 'hello';
+				let curValue = false;
+				const curHash = helpers.createRandomString(15);
 				/**
 				 *
 				 * Google Maps API
@@ -54,10 +55,8 @@ const handlers = {
 					})
 					.asPromise()
 					.then(response => {
-						curValue = response.json.routes[0].legs;
-						dataStorage.create('routes', helpers.createRandomString(15), curValue, err =>
-							global.console.log(err)
-						);
+						curValue = response.json;
+						dataStorage.create('routes', `routes_${curHash}`, curValue, err => global.console.log(err));
 						// dataStorage.read('routes', 'newFile', (err, _data) =>
 						// 	global.console.log(`Error is: ${err} , data is: ${JSON.stringify(_data)}`)
 						// );
@@ -72,7 +71,7 @@ const handlers = {
 							Authorization: `Bearer ${JSON.parse(res).access_token}`,
 						})
 						.then(_res => {
-							dataStorage.create('bars', helpers.createRandomString(15), JSON.parse(_res), err =>
+							dataStorage.create('bars', `bars_${curHash}`, JSON.parse(_res), err =>
 								global.console.log(err)
 							);
 							console.log(_res);
@@ -86,11 +85,8 @@ const handlers = {
 									}
 								)
 								.then(___res => {
-									dataStorage.create(
-										'barTrip',
-										helpers.createRandomString(15),
-										JSON.parse(___res),
-										__err => global.console.log(__err)
+									dataStorage.create('barTrip', `barTrip_${curHash}`, JSON.parse(___res), __err =>
+										global.console.log(__err)
 									);
 									console.log(___res);
 								});
