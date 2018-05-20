@@ -61,38 +61,47 @@ const handlers = {
 						// 	global.console.log(`Error is: ${err} , data is: ${JSON.stringify(_data)}`)
 						// );
 					})
+					.then(() => {
+						helpers
+							.gettingAccessToken('http://10.91.87.76:8080/app/rest/v2/oauth/token')
+							.then(res => {
+								helpers
+									.gettingBars('http://10.91.87.76:8080/app/rest/v2/entities/bartrip$Bar', {
+										Authorization: `Bearer ${JSON.parse(res).access_token}`,
+									})
+									.then(_res => {
+										dataStorage.create('bars', `bars_${curHash}`, JSON.parse(_res), err =>
+											global.console.log(err)
+										);
+										console.log(_res);
+									})
+									.then(() => {
+										helpers
+											.gettingBarTrip(
+												'http://10.91.87.76:8080/app/rest/v2/queries/bartrip$BarTrip/uncompletedBarTrips?owner=admin',
+												{
+													Authorization: `Bearer ${JSON.parse(res).access_token}`,
+												}
+											)
+											.then(___res => {
+												dataStorage.create(
+													'barTrip',
+													`barTrip_${curHash}`,
+													JSON.parse(___res),
+													__err => global.console.log(__err)
+												);
+												console.log(___res);
+											});
+									});
+							})
+							.then(() => {
+								console.log(curValue);
+								callback(200, curValue);
+							});
+					})
 					.catch(err => {
 						console.log(err);
 					});
-
-				helpers.gettingAccessToken('http://10.91.87.76:8080/app/rest/v2/oauth/token').then(res => {
-					helpers
-						.gettingBars('http://10.91.87.76:8080/app/rest/v2/entities/bartrip$Bar', {
-							Authorization: `Bearer ${JSON.parse(res).access_token}`,
-						})
-						.then(_res => {
-							dataStorage.create('bars', `bars_${curHash}`, JSON.parse(_res), err =>
-								global.console.log(err)
-							);
-							console.log(_res);
-						})
-						.then(() => {
-							helpers
-								.gettingBarTrip(
-									'http://10.91.87.76:8080/app/rest/v2/queries/bartrip$BarTrip/uncompletedBarTrips?owner=admin',
-									{
-										Authorization: `Bearer ${JSON.parse(res).access_token}`,
-									}
-								)
-								.then(___res => {
-									dataStorage.create('barTrip', `barTrip_${curHash}`, JSON.parse(___res), __err =>
-										global.console.log(__err)
-									);
-									console.log(___res);
-								});
-						});
-				});
-				callback(200);
 			} else {
 				callback(400);
 			}
