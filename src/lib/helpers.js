@@ -2,7 +2,19 @@
 import requestPromise from 'request-promise';
 
 const helpers = {
-	// createRandomString: () => {},
+	createRandomString: strLength => {
+		const curStrLength = typeof strLength === 'number' && strLength > 0 ? strLength : false;
+		if (curStrLength) {
+			const allChars = 'abcdefghijklmnopqrstuvwxyz1234567890';
+			let randomString = '';
+			for (let i = 0; i < curStrLength; i += 1) {
+				const curChar = allChars.charAt(Math.floor(Math.random() * allChars.length));
+				randomString += curChar;
+			}
+			return randomString;
+		}
+		return false;
+	},
 	gettingAccessToken: url => {
 		const reqOptions = {
 			url,
