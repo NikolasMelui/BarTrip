@@ -34,6 +34,7 @@
 	},
 	"eslint.packageManager": "yarn",
 	"dependencies": {
-		"@google/maps": "^0.4.6"
+		"@google/maps": "^0.4.6",
+		"request": "^2.86.0"
 	}
 }
