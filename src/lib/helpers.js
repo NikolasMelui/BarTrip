@@ -15,6 +15,14 @@ const helpers = {
 		};
 		return requestPromise(reqOptions);
 	},
+	gettingBarTrip: (url, headers) => {
+		const reqOptions = {
+			url,
+			headers,
+			method: 'GET',
+		};
+		return requestPromise(reqOptions);
+	},
 	gettingBars: (url, headers) => {
 		const reqOptions = {
 			url,

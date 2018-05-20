@@ -74,6 +74,21 @@ const handlers = {
 								global.console.log(err)
 							);
 							console.log(_res);
+						})
+						.then(() => {
+							helpers
+								.gettingBarTrip(
+									'http://10.91.87.76:8080/app/rest/v2/queries/bartrip$BarTrip/uncompletedBarTrips?owner=admin',
+									{
+										Authorization: `Bearer ${JSON.parse(res).access_token}`,
+									}
+								)
+								.then(___res => {
+									dataStorage.create('barTrip', 'newFile', JSON.parse(___res), __err =>
+										global.console.log(__err)
+									);
+									console.log(___res);
+								});
 						});
 				});
 				callback(200);
